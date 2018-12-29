@@ -14,7 +14,6 @@ const RegisterReducer = (state,action) => {
 
     state = generatedReducer(state,action);
     if(action.type === Auth.REGISTER_STARTED){
-
         return Object.assign({},state, {
             user: action.payload
         });

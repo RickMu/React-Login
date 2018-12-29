@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
 import { StyledRegisterForm } from './RegisterForm.Presentation';
+import { userActions } from '../../../_actions';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-class RegisterForm extends Component{
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    register: userActions.register
+},dispatch));
+
+
+class ConnectedRegisterForm extends Component{
     state={
         firstname: "",
         lastname: "",
@@ -17,7 +25,7 @@ class RegisterForm extends Component{
 
     handleOnFormSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state)
+        this.props.register(this.state);
     }
 
     handleOnPasswordRepeatChange = (object) => {
@@ -42,5 +50,7 @@ class RegisterForm extends Component{
         )
     }
 }
+
+const RegisterForm = connect(null, mapDispatchToProps)(ConnectedRegisterForm);
 
 export { RegisterForm };

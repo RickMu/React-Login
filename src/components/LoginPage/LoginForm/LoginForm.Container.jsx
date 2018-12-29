@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { StyledLoginForm } from './LoginForm.Presentation';
+import { connect } from 'react-redux';
+import { userActions } from '../../../_actions';
+import { bindActionCreators} from 'redux';
 
+const select = appState => ({
+    loginState: appState.login
+});
 
-class LoginForm extends Component{
+const mapDispatchToProps = dispatch => (bindActionCreators({
+    login: userActions.login
+},dispatch));
+
+class ConnectedLoginForm extends Component{
     state={
         email: "",
         password: ""
@@ -15,7 +25,7 @@ class LoginForm extends Component{
 
     handleOnFormSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state)
+        this.props.login(this.state);
     }
 
     render(){
@@ -29,4 +39,5 @@ class LoginForm extends Component{
     }
 }
 
+const LoginForm = connect(select, mapDispatchToProps)(ConnectedLoginForm);
 export { LoginForm };

@@ -7,7 +7,7 @@ const HomePageAppButton = () =>{
     return (
         <Button color="inherit">
             <Link to='/login' style={{textDecoration: 'none'}}>
-                <Typography headlineMapping="h6">
+                <Typography variant="h6">
                     Login
                 </Typography>
             </Link>
