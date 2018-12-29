@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { CreateStore } from 'redux';
 import { LoginApp } from './app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { store } from './_store';
 
 const theme = createMuiTheme({
     palette: {
@@ -17,13 +17,15 @@ const theme = createMuiTheme({
       },
 });
 
+
 ReactDOM.render(
-    
-    <BrowserRouter>
-        <MuiThemeProvider theme={theme}>
-            <LoginApp/>
-        </MuiThemeProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+                <LoginApp/>
+            </MuiThemeProvider>
+        </BrowserRouter>
+    </Provider>
     
     ,document.getElementById("root")
 )
