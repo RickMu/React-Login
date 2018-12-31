@@ -1,7 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## React Redux
-Will soon finish the redux components
+## React Redux Login:
+Project includes
+- Redux thunk
+- Auth0 integration
+- Material UI
 
 
 ### Fake Backend

@@ -13,7 +13,7 @@ const generatedReducer = HttpMetaDataReducer({
 const LoginReducer = (state, action) => {
 
     state = generatedReducer(state,action);
-    if(action.type === Auth.LOGIN_SUCCEEDED){
+    if(action.type === Auth.LOGIN_STARTED){
         return Object.assign({}, state, {
                 user: action.payload
             });

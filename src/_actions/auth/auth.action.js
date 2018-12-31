@@ -1,6 +1,7 @@
 import { Auth } from "../../_constants";
+import { authService } from "../../_service/auth0";
 
-export function register(user){
+export function register(user, authService){
     return (dispatch) => {
 
         dispatch({
@@ -8,37 +9,52 @@ export function register(user){
             payload: user.email
         });
 
-        if(user.firstname && user.lastname && user.email && user.password){
-            dispatch({
-                type: Auth.REGISTER_SUCCEEDED
+        authService.signup(user.email,user.password, {
+            firstname: user.firstname,
+            lastname: user.lastname
+        }).then(
+            ()=> {
+                console.log("Sign up Success");
+                dispatch({
+                    type: Auth.REGISTER_SUCCEEDED
+                });
+            }
+        )    
+        .catch(
+            (err)=> {
+                console.log("Sign up failed");
+                dispatch({
+                    type: Auth.REGISTER_FAILED,
+                    payload: err
+                });
             });
-        }
-        else {
-            dispatch({
-                type: Auth.REGISTER_FAILED
-            });
-        }
     }
 }
 
-export function login(user){
+export function login(user, authService){
 
     return (dispatch) => {
 
         dispatch({
-            type: Auth.LOGIN_STARTED
+            type: Auth.LOGIN_STARTED,
+            payload: {
+                email: user.email,
+            }
         });
 
-        if(user.email && user.password){
+        authService.login(user.email,user.password).then(() => {
+            
+            console.log("Success Login");
+
             dispatch({
-                type: Auth.LOGIN_SUCCEEDED,
-                payload: user.email
+                type: Auth.LOGIN_SUCCEEDED
             });
-        }
-        else {
+        }).catch(()=>{
+            console.log("Login Failed");
             dispatch({
-                type: Auth.LOGIN_FAILED
+                type: Auth.LOGIN_FAILED,
+                payload: "login failed"
             });
-        }
+        })
     }
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { LoginForm } from './LoginForm';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     return (
         <div>
-            <LoginForm/>
+            <LoginForm {...props} />
         </div>
     )
 };

@@ -30,18 +30,21 @@ const styles = theme => ({
     },
     form: {
         width: '100%',
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing.unit
     },
     
     submit: {
         marginTop: theme.spacing.unit * 3,
+    },
+    errorDiv:{
+        marginTop: theme.spacing.uni*3
     }
 })
 
 
 
 const StyledLoginForm = (props) => {
-    const { classes, onPasswordChange,onEmailChange, onFormSubmit } = props;
+    const { classes,onInputChange, onFormSubmit, loginFailed } = props;
     return (
         <main className={classes.main}>
             <CssBaseline/>
@@ -55,17 +58,18 @@ const StyledLoginForm = (props) => {
                 <form className={classes.form} onSubmit={onFormSubmit}>
                     <FormControl margin="normal" required fullWidth>
                         <InputLabel htmlFor="email">Email Address</InputLabel>
-                        <Input id="email" name="email" autoComplete="email" autoFocus onChange={onEmailChange}/>
+                        <Input id="email" name="email" autoComplete="email" autoFocus onChange={onInputChange}/>
                     </FormControl>
 
                     <FormControl margin="normal" required fullWidth>
                         <InputLabel htmlFor="password">Password</InputLabel>
-                        <Input id="password" type="password" name="password" autoComplete="current-password" onChange={onPasswordChange}/>
+                        <Input id="password" type="password" name="password" autoComplete="current-password" onChange={onInputChange}/>
                     </FormControl>
 
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign in
                     </Button>
+                    
                 </form>
             </Paper>
         </main>

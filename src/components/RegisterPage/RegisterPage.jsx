@@ -1,10 +1,10 @@
 import React from 'react';
 import { RegisterForm } from './RegisterForm/RegisterForm.Container';
 
-const RegisterPage = () => {
+const RegisterPage = (props) => {
     return (
         <div>
-            <RegisterForm/>
+            <RegisterForm {...props}/>
         </div>
     )
 };

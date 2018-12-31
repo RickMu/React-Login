@@ -3,10 +3,25 @@ import { StyledLoginForm } from './LoginForm.Presentation';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
 import { bindActionCreators} from 'redux';
+import Auth0 from '../../../_service/auth0';
+
+const selectLogin = (appState) => {
+    return appState.login;
+}
+
+const selectLoginFailed = (loginState) => {
+    if(loginState.error ===null){
+        return false;
+    }else {
+        return true;
+    }
+}
 
 const select = appState => ({
-    loginState: appState.login
+    loginState: selectLogin(appState),
+    loginFailed: selectLoginFailed(selectLogin(appState))
 });
+
 
 const mapDispatchToProps = dispatch => (bindActionCreators({
     login: userActions.login
@@ -23,17 +38,17 @@ class ConnectedLoginForm extends Component{
         this.setState({[target.name]: target.value});
     }
 
-    handleOnFormSubmit = (event) => {
+    handleOnFormSubmit = (event, authService = this.props.authService) => {
         event.preventDefault();
-        this.props.login(this.state);
+        this.props.login(this.state,authService);
     }
 
     render(){
         return (
             <StyledLoginForm
-                onPasswordChange={this.handleOnChange}
-                onEmailChange={this.handleOnChange}
+                onInputChange={this.handleOnChange}
                 onFormSubmit={this.handleOnFormSubmit}
+                loginFailed = {this.props.loginFailed}
             />
         )
     }
