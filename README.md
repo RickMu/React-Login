@@ -5,7 +5,3 @@ Project includes
 - Redux thunk
 - Auth0 integration (Custom UI + auth0 js sdk)
 - Material UI
-
-
-### Fake Backend
-Will add fake backend service
