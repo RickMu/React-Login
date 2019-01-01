@@ -1,6 +1,5 @@
 export const LOGIN_BASE = "LOGIN";
 export const REGISTER_BASE="REGISTER";
-
 export const AUTHENTICATION_BASE= "AUTHENTICATION";
 
 export const Auth = {

@@ -1,5 +1,4 @@
 import { Auth, Profile } from "../../_constants";
-import { authService } from "../../_service/auth0";
 
 export function register(user, authService){
     return (dispatch) => {
@@ -67,35 +66,61 @@ export function authenticate(authService) {
         });
     
         authService.handleAuthentication().then(()=>{
-            console.log("Handle Success")
+
             dispatch({
                 type: Auth.AUTHENTICATION_SUCCEEDED
             });
-
-            dispatch({
-                type: Profile.PROFILE_LOGGEDIN,
-                payload: {}
-            })
-
-            authService.getUserInfo().then((userInfo) => {
-                console.log(userInfo);
-                console.log("User Info Retrieved")
-                authService.getUserProfile().then((result) => {
-                    console.log(result);
-                    console.log("User Profile");
-                }).catch((err) => {
-                    console.log("User profile not retrieved");
-                })
-            }).catch((err) => {
-                console.log(err);
-            })
-    
         }).catch((err) => {
             console.log(err);
             dispatch({
                 type: Auth.AUTHENTICATION_FAILED
             });
         });
+    }
+}
+
+export function getUserInfo(authService){
+    return dispatch => {
+        dispatch({
+            type: Profile.USERINFO_FETCH_STARTED
+        })
+
+        authService.getUserInfo()
+            .then((userInfo) => {
+                dispatch({
+                    type: Profile.USERINFO_FETCH_SUCCEEDED,
+                    payload: userInfo
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                dispatch({
+                    type: Profile.USERINFO_FETCH_FAILED
+                })
+            })
+    }
+}
+
+export function getUserProfile(authService){
+    return dispatch => {
+        dispatch({
+            type: Profile.PROFILE_FETCH_STARTED
+        });
+
+        authService.getUserProfile()
+            .then((userProfile =>{
+               dispatch({
+                   type: Profile.PROFILE_FETCH_SUCCEEDED,
+                   payload: userProfile
+               })
+            }))
+            .catch((err) => {
+                console.log(err)
+                
+                dispatch({
+                    type: Profile.PROFILE_FETCH_FAILED
+                });
+            })
     }
 }
 

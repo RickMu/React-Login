@@ -6,7 +6,7 @@ export default class Auth0 {
         clientID: 'ioF2s8vLgN7qWs6q-ksJevzurDYHUGL3',
         redirectUri: 'http://localhost:3000/callback',
         responseType: 'token id_token',
-        scope: 'openid profile read:current_user',
+        scope: 'openid profile email read:current_user',
         audience: `https://rickmu.au.auth0.com/api/v2/`,
     })
 
@@ -73,16 +73,17 @@ export default class Auth0 {
     getUserProfile =() => {
             return new Promise((resolve, reject) => 
         {
-            let management = new auth0.Management({
-                domain:'rickmu.au.auth0.com',
-                token:  this.getAuthToken()
-            });
 
             const userId = this.getUserId();
 
             if(userId ===null) {
                 return reject("No UserId stored");
             }
+            
+            let management = new auth0.Management({
+                domain:'rickmu.au.auth0.com',
+                token:  this.getAuthToken()
+            });
             
             management.getUser(userId,(err,result) => {
                 if(err){

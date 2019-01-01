@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const generatedReducer = HttpMetaDataReducer({
-    baseType: "AUTHENTICATION",
+    baseType: AUTHENTICATION_BASE,
     wrappedReducerInitialState: initialState
 });
 
