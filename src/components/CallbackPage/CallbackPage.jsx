@@ -1,16 +1,21 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { userActions } from '../../_actions';
+import { connect } from 'react-redux';
 
-export const CallbackPage = ({authService}) => {
+const mapDispatchToProps = (dispatch) => (bindActionCreators({
+    authenticate: userActions.authenticate
+}, dispatch));
 
-    authService.handleAuthentication().then(()=>{
-        console.log("Handle Success")
-    }).catch((err) => console.log(err));
-    const session = JSON.stringify(authService.getSession());
-    
+const ConnectedCallbackPage = ({authenticate, authService}) => {
+
+    authenticate(authService);
+
     return (
         <div>
             <h2>Callback Page</h2>
-            <div>{session}</div>
         </div>
     )
 }
+
+export const CallbackPage = connect(null,mapDispatchToProps)(ConnectedCallbackPage);

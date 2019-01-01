@@ -1,4 +1,4 @@
-import { Auth } from "../../_constants";
+import { Auth, Profile } from "../../_constants";
 import { authService } from "../../_service/auth0";
 
 export function register(user, authService){
@@ -54,6 +54,52 @@ export function login(user, authService){
             dispatch({
                 type: Auth.LOGIN_FAILED,
                 payload: "login failed"
+            });
+        })
+    }
+}
+
+export function authenticate(authService) {
+
+    return (dispatch) => {
+        dispatch({
+            type: Auth.AUTHENTICATION_STARTED
+        });
+    
+        authService.handleAuthentication().then(()=>{
+            console.log("Handle Success")
+            dispatch({
+                type: Auth.AUTHENTICATION_SUCCEEDED
+            });
+
+            dispatch({
+                type: Profile.PROFILE_LOGGEDIN,
+                payload: {}
+            })
+    
+        }).catch((err) => {
+            console.log(err);
+            dispatch({
+                type: Auth.AUTHENTICATION_FAILED
+            });
+        });
+    }
+}
+
+export function logout(authService) {
+
+    return (dispatch) => {
+
+        console.log(dispatch);
+        console.log(authService);
+        authService.logout().then(() =>{
+            dispatch({
+                type:Auth.AUTHENTICATION_SIGNEDOUT
+            });
+        }).catch(err => {
+            console.log(err);
+            dispatch({
+                type: Auth.AUTHENTICATION_FAILED
             });
         })
     }

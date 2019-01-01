@@ -3,7 +3,6 @@ import { StyledLoginForm } from './LoginForm.Presentation';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
 import { bindActionCreators} from 'redux';
-import Auth0 from '../../../_service/auth0';
 
 const selectLogin = (appState) => {
     return appState.login;

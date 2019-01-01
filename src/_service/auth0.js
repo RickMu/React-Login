@@ -6,7 +6,7 @@ export default class Auth0 {
         clientID: 'ioF2s8vLgN7qWs6q-ksJevzurDYHUGL3',
         redirectUri: 'http://localhost:3000/callback',
         responseType: 'token id_token',
-        scope: 'openid'
+        scope: 'openid profile email meta_data'
     })
 
     googleAuthentication = () => (
@@ -29,6 +29,84 @@ export default class Auth0 {
                 }
                 this.setSession(authResult);
                 return resolve();
+            })
+        })
+    }
+
+    logout = () =>{
+        return new Promise((resolve,reject) => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('id_token');
+            localStorage.removeItem('expire_time');
+            return resolve();
+        });
+    }
+
+    renewAuthToken = (accessRights = {}) => {
+
+        return new Promise((resolve,reject) =>  {
+            this.auth0.checkSession(
+
+                accessRights,
+
+                (err,authResult) =>{
+                    if(err){
+                        console.log(err);
+                        return reject(err);
+                    }
+                    else{
+                        if (authResult && authResult.accessToken && authResult.idToken) {
+                            this.setSession(authResult);
+                            return resolve(authResult);
+                        }else {
+                            console.log("Could not set session");
+                            return reject();
+                        }
+                    }
+                })
+        });
+    }
+
+    // getUserProfile =() => {
+    //         return new Promise((resolve, reject) => 
+    //     {
+    //         this.renewAuthToken({scope: 'read:current_user'})
+    //         .then((authResult) => {
+    //             let management = new auth0.Management({
+    //                 domain:'rickmu.au.auth0.com',
+    //                 token:  authResult.accessToken
+    //             });
+    //             console.log(authResult);
+    //             management.getUser("5c288d84e92e3e37eceb9a53",(err,result) => {
+    //                 if(err){
+    //                     console.log(err)
+    //                     return reject(err);
+    //                 }else{
+                        
+    //                     console.log(result);
+    //                     return resolve();
+    //                 }
+    //             })
+    //         })
+    //     })
+    // }
+
+
+    getUserInfo = () => {
+        return new Promise((resolve,reject) => {
+
+            if(!this.isLoggedIn()){
+                return reject({error: "Not loggedIn"});
+            }
+
+            this.auth0.client.userInfo(this.getAuthToken(),
+            (err,user) => {
+                if(err){
+                    return reject(err);
+                }
+                else{
+                    return resolve(user);
+                }
             })
         })
     }
@@ -58,13 +136,26 @@ export default class Auth0 {
         localStorage.setItem('id_token', authResult.idToken);
         let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
         localStorage.setItem('expire_time', expiresAt);
-    }
+    };
+
+    getAuthToken = () => (localStorage.getItem('access_token'));
+
+    getIdToken = () => (localStorage.getItem('id_token'));
 
     getSession = () => ({
         access_token: localStorage.getItem('access_token'),
         id_token: localStorage.getItem('id_token'),
         expiresAt: localStorage.getItem('expire_time')
-    })
+    });
+
+    isLoggedIn = () => (
+        localStorage.getItem('access_token') 
+    );
+
+    isAuthenticated = () =>(
+        Date.now()< localStorage.getItem('expire_time')
+    )
+
 
     handleAuthentication = () => {
         return new Promise((resolve, reject) => {
@@ -72,7 +163,7 @@ export default class Auth0 {
                 (err,authResult) => {
                     if(authResult && authResult.accessToken && authResult.idToken){
                         this.setSession(authResult);
-                        return resolve;
+                        return resolve();
                     } 
                     else{
                         if(err) {

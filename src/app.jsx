@@ -4,9 +4,9 @@ import { Route, Switch } from 'react-router-dom';
 import { HomePage, HomePageAppButton } from './components/HomePage';
 import { LoginPage } from './components/LoginPage';
 import { RegisterPage } from './components/RegisterPage';
-import { HomeAppBar } from './components/common/AppBar/AppBar';
 import { CallbackPage } from './components/CallbackPage';
 import Auth0 from './_service/auth0';
+import { HomeAppBar } from './components/common/AppBar';
 
 const pages = [
     {
@@ -28,7 +28,7 @@ const auth0 = new Auth0();
 const LoginApp = () => {
     return (
         <div>
-        <HomeAppBar name="Example App" pages={pages} component={HomePageAppButton}/>
+        <HomeAppBar name="Example App" pages={pages} authService={auth0} component={HomePageAppButton}/>
         <Switch>
             <Route exact path="/" component={HomePage}/>
             <Route path="/login" render={() => <LoginPage authService={auth0}/>}/>
