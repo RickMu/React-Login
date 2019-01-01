@@ -76,6 +76,19 @@ export function authenticate(authService) {
                 type: Profile.PROFILE_LOGGEDIN,
                 payload: {}
             })
+
+            authService.getUserInfo().then((userInfo) => {
+                console.log(userInfo);
+                console.log("User Info Retrieved")
+                authService.getUserProfile().then((result) => {
+                    console.log(result);
+                    console.log("User Profile");
+                }).catch((err) => {
+                    console.log("User profile not retrieved");
+                })
+            }).catch((err) => {
+                console.log(err);
+            })
     
         }).catch((err) => {
             console.log(err);

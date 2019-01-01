@@ -6,7 +6,8 @@ export default class Auth0 {
         clientID: 'ioF2s8vLgN7qWs6q-ksJevzurDYHUGL3',
         redirectUri: 'http://localhost:3000/callback',
         responseType: 'token id_token',
-        scope: 'openid profile email meta_data'
+        scope: 'openid profile read:current_user',
+        audience: `https://rickmu.au.auth0.com/api/v2/`,
     })
 
     googleAuthentication = () => (
@@ -38,12 +39,14 @@ export default class Auth0 {
             localStorage.removeItem('access_token');
             localStorage.removeItem('id_token');
             localStorage.removeItem('expire_time');
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('userId');
+            this.auth0.logout();
             return resolve();
         });
     }
 
     renewAuthToken = (accessRights = {}) => {
-
         return new Promise((resolve,reject) =>  {
             this.auth0.checkSession(
 
@@ -67,30 +70,29 @@ export default class Auth0 {
         });
     }
 
-    // getUserProfile =() => {
-    //         return new Promise((resolve, reject) => 
-    //     {
-    //         this.renewAuthToken({scope: 'read:current_user'})
-    //         .then((authResult) => {
-    //             let management = new auth0.Management({
-    //                 domain:'rickmu.au.auth0.com',
-    //                 token:  authResult.accessToken
-    //             });
-    //             console.log(authResult);
-    //             management.getUser("5c288d84e92e3e37eceb9a53",(err,result) => {
-    //                 if(err){
-    //                     console.log(err)
-    //                     return reject(err);
-    //                 }else{
-                        
-    //                     console.log(result);
-    //                     return resolve();
-    //                 }
-    //             })
-    //         })
-    //     })
-    // }
+    getUserProfile =() => {
+            return new Promise((resolve, reject) => 
+        {
+            let management = new auth0.Management({
+                domain:'rickmu.au.auth0.com',
+                token:  this.getAuthToken()
+            });
 
+            const userId = this.getUserId();
+
+            if(userId ===null) {
+                return reject("No UserId stored");
+            }
+            
+            management.getUser(userId,(err,result) => {
+                if(err){
+                    return reject(err);
+                }else{
+                    return resolve(result);
+                }
+            })
+        })
+    }
 
     getUserInfo = () => {
         return new Promise((resolve,reject) => {
@@ -100,12 +102,13 @@ export default class Auth0 {
             }
 
             this.auth0.client.userInfo(this.getAuthToken(),
-            (err,user) => {
+            (err,userInfo) => {
                 if(err){
                     return reject(err);
                 }
                 else{
-                    return resolve(user);
+                    this.setUserInfo(userInfo);
+                    return resolve(userInfo);
                 }
             })
         })
@@ -137,6 +140,13 @@ export default class Auth0 {
         let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
         localStorage.setItem('expire_time', expiresAt);
     };
+
+    setUserInfo = (userInfo) => {
+        localStorage.setItem('userId', userInfo.sub);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    }
+
+    getUserId = () => localStorage.getItem('userId');
 
     getAuthToken = () => (localStorage.getItem('access_token'));
 

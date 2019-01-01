@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppSideDrawer } from '../SideDrawer/SideDrawer';
 import { LoginButton, SignOutButton } from '../buttons';
+import { CircularProgress } from '@material-ui/core';
 
 const styles = {
     root: {
@@ -22,7 +23,7 @@ const styles = {
       },
   };
 
-const AppBarView = ({classes, name, pages, loggedIn, open, toggleDrawer, logout}) => {
+const AppBarView = ({classes, name, pages, open, toggleDrawer, children}) => {
     return (
         <div>
                 <AppBar position="static">
@@ -33,10 +34,7 @@ const AppBarView = ({classes, name, pages, loggedIn, open, toggleDrawer, logout}
                         <Typography variant="h5" color='inherit' className={classes.grow}>
                             {name}
                         </Typography>
-                        {!loggedIn ?
-                            <LoginButton/>
-                            : <SignOutButton onClick={logout}/>
-                        }
+                        {children}
                     </Toolbar>
                 </AppBar>
                 <AppSideDrawer pages={pages} toggle={toggleDrawer} isOpen={open}/>

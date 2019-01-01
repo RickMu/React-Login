@@ -4,12 +4,16 @@ import { StyledAppBarView } from './AppBar.presentation';
 import { connect } from 'react-redux';
 import { combineReducers } from 'redux';
 import { userActions } from '../../../_actions';
+import { SignOutButton, LoginButton } from '../buttons';
+import { CircularProgressIcon } from '../ProgressIcon/CircularIcon';
 
 const selectAuthenticate = appState => appState.authenticate;
 const selectIsAuthenticated = authenticate => authenticate.isAuthenticated;
+const selectisLoading = authenticate => authenticate.loading;
 
 const select = appState => ({
-    isAuthenticated: selectIsAuthenticated(selectAuthenticate(appState))
+    isAuthenticated: selectIsAuthenticated(selectAuthenticate(appState)),
+    isLoading: selectisLoading(selectAuthenticate(appState))
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,10 +39,21 @@ class AppBarContainer extends Component {
     }
 
     render(){
-        const { isAuthenticated, authService } = this.props;
+        const { authService, isAuthenticated, isLoading } = this.props;
+        
+        let TopRightIcon = <LoginButton/>
+
+        if(isLoading){
+            TopRightIcon = <CircularProgressIcon/>
+        }
+        else if(isAuthenticated){
+            TopRightIcon = <SignOutButton action={() => this.props.logout(authService)} />
+        }
 
         return (
-           <StyledAppBarView {...this.props} open={this.state.drawer.open} toggleDrawer={this.toggleDrawer} loggedIn={isAuthenticated} logout={() => this.props.logout(authService)}/>
+           <StyledAppBarView {...this.props} open={this.state.drawer.open} toggleDrawer={this.toggleDrawer}>
+                {TopRightIcon}
+           </StyledAppBarView>
         )
     }
 };
