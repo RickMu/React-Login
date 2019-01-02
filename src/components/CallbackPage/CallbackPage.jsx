@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 import { CircularProgressIcon } from '../common/ProgressIcon/CircularIcon';
 
 const mapDispatchToProps = (dispatch) => (bindActionCreators({
-    authenticate: userActions.authenticate
+    authenticate: userActions.authenticate,
+    getUserInfo: userActions.getUserInfo,
 }, dispatch));
 
 const ConnectedCallbackPage = ({authenticate, authService}) => {
 
     authenticate(authService);
+
 
     return (
         <div>

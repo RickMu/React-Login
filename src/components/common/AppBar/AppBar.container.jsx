@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 import { userActions } from '../../../_actions';
 import { SignOutButton, LoginButton } from '../buttons';
 import { CircularProgressIcon } from '../ProgressIcon/CircularIcon';
+import { ProfileMenu } from '../ProfileMenu/ProfileMenu.container';
 
 const selectAuthenticate = appState => appState.authenticate;
 const selectIsAuthenticated = authenticate => authenticate.isAuthenticated;
@@ -43,11 +44,9 @@ class AppBarContainer extends Component {
         
         let TopRightIcon = <LoginButton/>
 
-        if(isLoading){
-            TopRightIcon = <CircularProgressIcon/>
-        }
-        else if(isAuthenticated){
-            TopRightIcon = <SignOutButton action={() => this.props.logout(authService)} />
+        if(isLoading || isAuthenticated){
+            // TopRightIcon = <SignOutButton action={() => this.props.logout(authService)} />
+            TopRightIcon = <ProfileMenu/>
         }
 
         return (
