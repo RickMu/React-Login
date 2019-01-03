@@ -3,22 +3,11 @@ import { StyledLoginForm } from './LoginForm.Presentation';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
 import { bindActionCreators} from 'redux';
-
-const selectLogin = (appState) => {
-    return appState.login;
-}
-
-const selectLoginFailed = (loginState) => {
-    if(loginState.error ===null){
-        return false;
-    }else {
-        return true;
-    }
-}
+import { selectLogin, selectLoginFailed } from '../../../_selectors';
 
 const select = appState => ({
     loginState: selectLogin(appState),
-    loginFailed: selectLoginFailed(selectLogin(appState))
+    loginFailed: selectLoginFailed(appState)
 });
 
 

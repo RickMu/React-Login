@@ -22,14 +22,14 @@ const payloadSelect = payload => ({
 })
 
 const generatedReducer = HttpMetaDataReducer({
-    type: PROFILE_BASE,
+    baseType: PROFILE_BASE,
     wrappedReducerInitialState: initialState
 });
 
 export const ProfileReducer = (state, action) => {
     state = generatedReducer(state, action);
 
-    if(action.type === Profile.PROFILE_FETCH_STARTED){
+    if(action.type === Profile.PROFILE_FETCH_SUCCEEDED){
         return Object.assign({}, state, payloadSelect(action.payload));
     }
     else{

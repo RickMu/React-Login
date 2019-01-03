@@ -12,7 +12,7 @@ const payloadSelect = payload=>({
 })
 
 const generatedReducer = HttpMetaDataReducer({
-    type: USERINFO_BASE,
+    baseType: USERINFO_BASE,
     wrappedReducerInitialState: initialState
 });
 

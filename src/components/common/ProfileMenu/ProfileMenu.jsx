@@ -28,7 +28,7 @@ class ProfileMenuPresentation extends Component{
     }
 
     render() {
-      const {classes, open, handleToggle, handleClose} = this.props;
+      const {classes, open, handleToggle} = this.props;
       return (
         <div className={classes.root}>
           <IconButton className={classes.avatar}
@@ -48,9 +48,7 @@ class ProfileMenuPresentation extends Component{
             open={open}
             onClose={handleToggle}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            {this.props.children}
           </Menu>
         </div>
       );

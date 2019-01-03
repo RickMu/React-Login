@@ -12,8 +12,7 @@ const mapDispatchToProps = (dispatch) => (bindActionCreators({
 const ConnectedCallbackPage = ({authenticate, authService}) => {
 
     authenticate(authService);
-
-
+    
     return (
         <div>
             <h2>Callback Page</h2>

@@ -87,6 +87,7 @@ export function getUserInfo(authService){
 
         authService.getUserInfo()
             .then((userInfo) => {
+                console.log(userInfo)
                 dispatch({
                     type: Profile.USERINFO_FETCH_SUCCEEDED,
                     payload: userInfo

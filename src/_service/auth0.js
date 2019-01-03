@@ -41,7 +41,9 @@ export default class Auth0 {
             localStorage.removeItem('expire_time');
             localStorage.removeItem('userInfo');
             localStorage.removeItem('userId');
-            this.auth0.logout();
+            this.auth0.logout({
+                returnTo: "http://localhost:3000/"
+            });
             return resolve();
         });
     }

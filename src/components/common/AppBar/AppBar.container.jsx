@@ -7,19 +7,13 @@ import { userActions } from '../../../_actions';
 import { SignOutButton, LoginButton } from '../buttons';
 import { CircularProgressIcon } from '../ProgressIcon/CircularIcon';
 import { ProfileMenu } from '../ProfileMenu/ProfileMenu.container';
+import { AuthSelectors} from '../../../_selectors'
 
-const selectAuthenticate = appState => appState.authenticate;
-const selectIsAuthenticated = authenticate => authenticate.isAuthenticated;
-const selectisLoading = authenticate => authenticate.loading;
 
 const select = appState => ({
-    isAuthenticated: selectIsAuthenticated(selectAuthenticate(appState)),
-    isLoading: selectisLoading(selectAuthenticate(appState))
+    isAuthenticated: AuthSelectors.selectIsAuthenticated(appState),
+    isLoading: AuthSelectors.selectIsLoading(appState)
 });
-
-const mapDispatchToProps = dispatch => ({
-    logout: service => dispatch(userActions.logout(service))
-})
 
 class AppBarContainer extends Component {
     constructor(props){
@@ -46,7 +40,7 @@ class AppBarContainer extends Component {
 
         if(isLoading || isAuthenticated){
             // TopRightIcon = <SignOutButton action={() => this.props.logout(authService)} />
-            TopRightIcon = <ProfileMenu/>
+            TopRightIcon = <ProfileMenu authService={authService}/>
         }
 
         return (
@@ -57,6 +51,6 @@ class AppBarContainer extends Component {
     }
 };
 
-const HomeAppBar = connect(select, mapDispatchToProps)(AppBarContainer)
+const HomeAppBar = connect(select)(AppBarContainer)
 
 export { HomeAppBar };
