@@ -1,9 +1,10 @@
 import auth0 from 'auth0-js';
+import jwt from 'jsonwebtoken';
 
 export default class Auth0 {
     auth0 = new auth0.WebAuth({
         domain: 'rickmu.au.auth0.com',
-        clientID: 'ioF2s8vLgN7qWs6q-ksJevzurDYHUGL3',
+        clientID: 'Ixihhu4zaVSXNM1zs7knCFIs1ziaBhvh',
         redirectUri: 'http://localhost:3000/callback',
         responseType: 'token id_token',
         scope: 'openid profile email read:current_user',
@@ -176,6 +177,9 @@ export default class Auth0 {
                 (err,authResult) => {
                     if(authResult && authResult.accessToken && authResult.idToken){
                         this.setSession(authResult);
+                        
+                        console.log(jwt.decode(authResult.idToken))
+                        //setUserInfo
                         return resolve();
                     } 
                     else{

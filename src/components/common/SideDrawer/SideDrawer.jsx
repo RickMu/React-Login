@@ -22,7 +22,7 @@ class StyledAppSideDrawer extends Component {
                 <List>
                     { pages.map((page,index) => (
                         <ListItem button key={page.name} onClick={toggle}>
-                            <Link to={page.link} style={{textDecoration:'none'}}>
+                            <Link to={page.link} style={{textDecoration:'none'}} onClick={console.log("Clicked SideBar")}>
                                 <Typography variant="h6">
                                     {page.name}
                                 </Typography>

@@ -4,11 +4,15 @@ import { userActions } from '../../../_actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Auth0 from '../../../_service/auth0';
+import { Register } from '../../../_selectors/register_selectors/selectors';
 
 const mapDispatchToProps = dispatch => (bindActionCreators({
     register: userActions.register
 },dispatch));
 
+const select = appState => ({
+    isProcessing: Register.selectLoading(appState)
+})
 
 class ConnectedRegisterForm extends Component{
     
@@ -48,11 +52,12 @@ class ConnectedRegisterForm extends Component{
                 onFormSubmit={this.handleOnFormSubmit}
                 passwordRepeatedCorrectly={this.state.passwordRepeatedCorrectly}
                 onPasswordRepeatChange={this.handleOnPasswordRepeatChange}
+                isProcessing={this.props.isProcessing}
             />
         )
     }
 }
 
-const RegisterForm = connect(null, mapDispatchToProps)(ConnectedRegisterForm);
+const RegisterForm = connect(select, mapDispatchToProps)(ConnectedRegisterForm);
 
 export { RegisterForm };

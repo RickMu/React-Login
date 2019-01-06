@@ -3,10 +3,10 @@ import { StyledLoginForm } from './LoginForm.Presentation';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
 import { bindActionCreators} from 'redux';
-import { selectLogin, selectLoginFailed } from '../../../_selectors';
+import { selectLogin, selectLoginFailed, selectIsLoading } from '../../../_selectors';
 
 const select = appState => ({
-    loginState: selectLogin(appState),
+    isLoading: selectIsLoading(appState),
     loginFailed: selectLoginFailed(appState)
 });
 
@@ -37,6 +37,7 @@ class ConnectedLoginForm extends Component{
                 onInputChange={this.handleOnChange}
                 onFormSubmit={this.handleOnFormSubmit}
                 loginFailed = {this.props.loginFailed}
+                isLoading = {this.props.isLoading}
             />
         )
     }

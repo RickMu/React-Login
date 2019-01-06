@@ -20,7 +20,7 @@ export const UserInfoReducer = (state, action) => {
     state = generatedReducer(state, action);
 
     if(action.type === Profile.USERINFO_FETCH_SUCCEEDED){
-        return Object.assign({}, state, payloadSelect);
+        return Object.assign({}, state, payloadSelect(action.payload));
     }
     else{
         return state;
