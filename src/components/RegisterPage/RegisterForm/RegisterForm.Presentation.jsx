@@ -3,6 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import React from 'react';
+import { CircularProgressIcon } from '../../common/ProgressIcon/CircularIcon';
 
 const styles = theme => ({
     main: {
@@ -42,7 +43,7 @@ const styles = theme => ({
 
 
 const StyledRegisterForm = (props) => {
-    const { classes, onInputChange, onFormSubmit, onPasswordRepeatChange, passwordRepeatedCorrectly} = props;
+    const { classes, onInputChange, onFormSubmit, onPasswordRepeatChange, passwordRepeatedCorrectly, isProcessing} = props;
 
     let passwordRepeatedFieldShouldError = false;
     if(passwordRepeatedCorrectly === null || passwordRepeatedCorrectly){
@@ -55,9 +56,16 @@ const StyledRegisterForm = (props) => {
         <main className={classes.main}>
             <CssBaseline/>
             <Paper className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockIcon />
-                </Avatar>
+                {
+                    isProcessing ?
+                    <CircularProgressIcon/>
+                    :
+                    <Avatar className={classes.avatar}>
+                        <LockIcon />
+                    </Avatar>
+                }
+                
+
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>

@@ -25,8 +25,8 @@ const styles = {
 
 const AppBarView = ({classes, name, pages, open, toggleDrawer, children}) => {
     return (
-        <div>
-                <AppBar position="static">
+        <React.Fragment>
+                <AppBar position="static" style={{margin:0}}>
                     <Toolbar>
                         <IconButton onClick={toggleDrawer} className = {classes.menuButton} color='inherit' aria-label="Menu">
                             <MenuIcon/>
@@ -38,7 +38,7 @@ const AppBarView = ({classes, name, pages, open, toggleDrawer, children}) => {
                     </Toolbar>
                 </AppBar>
                 <AppSideDrawer pages={pages} toggle={toggleDrawer} isOpen={open}/>
-            </div>
+        </React.Fragment>
     )
 }
 

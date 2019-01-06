@@ -13,7 +13,7 @@ function StyledCircularProgressIcon(props) {
   const { classes } = props;
   return (
     <div>
-      <CircularProgress className={classes.progress} color="secondary" />
+      <CircularProgress className={classes.progress} color="primary" />
     </div>
   );
 }

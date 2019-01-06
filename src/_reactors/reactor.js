@@ -21,7 +21,6 @@ export function configureReactors (services) {
         })
 
         if(nextReaction){
-            console.log(nextReaction)
             store.dispatch(nextReaction);
         }
     })

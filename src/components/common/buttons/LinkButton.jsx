@@ -5,8 +5,8 @@ import { Typography } from '@material-ui/core';
 
 export const LinkButton = ({link, text}) =>{
     return (
-        <Button color="inherit">
-            <Link to={link} style={{textDecoration: 'none'}}>
+        <Button color="inherit" onClick={console.log("Clicked")}>
+            <Link to={link} style={{textDecoration: 'none'}} onClick={console.log("Clicked")}>
                 <Typography variant="h6">
                     {text}
                 </Typography>
