@@ -26,7 +26,7 @@ const styles = {
 const AppBarView = ({classes, name, pages, open, toggleDrawer, children}) => {
     return (
         <React.Fragment>
-                <AppBar position="static">
+                <AppBar position="static" style={{margin:0}}>
                     <Toolbar>
                         <IconButton onClick={toggleDrawer} className = {classes.menuButton} color='inherit' aria-label="Menu">
                             <MenuIcon/>

@@ -24,16 +24,9 @@ const pages = [
     }
 ];
 
-const select = appState => ({
-    redirect: AppCommonSelectors.selectNeedRedirect(appState),
-    nextPage: AppCommonSelectors.selectNextPage(appState)
-});
-
-class ConnectedLoginApp extends Component{
-    render() {
-        const { auth0 } = this.props;
-        return (
-            <div>
+const LoginApp = ({auth0}) => {
+    return (
+        <React.Fragment>
             <HomeAppBar name="Example App" pages={pages} authService={auth0}/>
             <Switch>
                 <Route exact path="/" component={HomePage}/>
@@ -45,11 +38,8 @@ class ConnectedLoginApp extends Component{
                     }
                 }/>
             </Switch>
-            </div>
-        );
-    }
+        </React.Fragment>
+    );
 }
-
-const LoginApp = connect(select)(ConnectedLoginApp);
 
 export { LoginApp };
