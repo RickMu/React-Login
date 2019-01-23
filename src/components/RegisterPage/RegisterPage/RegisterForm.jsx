@@ -108,4 +108,4 @@ const RegisterForm = withStyles(styles)(StyledRegisterForm)
 
 
 
-export { RegisterForm as StyledRegisterForm};
+export default RegisterForm;

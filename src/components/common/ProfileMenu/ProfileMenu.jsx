@@ -16,7 +16,6 @@ const styles = theme => ({
     }
   });  
 
-
 class ProfileMenuPresentation extends Component{
   
     state = {

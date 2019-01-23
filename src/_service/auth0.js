@@ -1,7 +1,6 @@
 import auth0 from 'auth0-js';
 import jwt from 'jsonwebtoken';
-
-export default class Auth0 {
+class Auth0 {
     auth0 = new auth0.WebAuth({
         domain: 'rickmu.au.auth0.com',
         clientID: 'Ixihhu4zaVSXNM1zs7knCFIs1ziaBhvh',
@@ -18,7 +17,7 @@ export default class Auth0 {
     )
 
     login = (username, password) => {
-        return new Promise((resolve, reject) => {
+        let promise = new Promise((resolve, reject) => {
             this.auth0.login({
                 realm: 'Username-Password-Authentication',
                 username: username,
@@ -30,9 +29,10 @@ export default class Auth0 {
                     return reject(err);
                 }
                 this.setSession(authResult);
-                return resolve();
+                return resolve(authResult);
             })
         })
+        return promise;
     }
 
     logout = () =>{
@@ -73,7 +73,7 @@ export default class Auth0 {
         });
     }
 
-    getUserProfile =() => {
+    getUserProfile = () => {
             return new Promise((resolve, reject) => 
         {
 
@@ -119,7 +119,6 @@ export default class Auth0 {
     }
 
     signup = (email, password, metadata={}) => {
-
         return new Promise((resolve, reject) => {
             this.auth0.signup({
                 connection: 'Username-Password-Authentication',
@@ -131,7 +130,6 @@ export default class Auth0 {
                 if(err){
                     return reject(err);
                 }
-                
                 return resolve();
             })
         })
@@ -193,3 +191,5 @@ export default class Auth0 {
         })
     }
 }
+
+export default new Auth0();

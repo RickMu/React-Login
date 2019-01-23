@@ -1,13 +1,20 @@
 import React, {Component} from 'react';
-import { StyledRegisterForm } from './RegisterForm.Presentation';
 import { userActions } from '../../../_actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Auth0 from '../../../_service/auth0';
 import { Register } from '../../../_selectors/register_selectors/selectors';
+import RegisterForm from '../RegisterPage/RegisterForm';
+import auth0 from '../../../_service/auth0';
+
 
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    register: userActions.register
+    register: (user) => userActions.register(user, 
+        () => auth0.signup(user.email,user.password, {
+            firstname: user.firstname,
+            lastname: user.lastname
+        })
+    )
+
 },dispatch));
 
 const select = appState => ({
@@ -29,9 +36,9 @@ class ConnectedRegisterForm extends Component{
         this.setState({[target.name]: target.value});
     }
 
-    handleOnFormSubmit = (event, authService =this.props.authService) => {
+    handleOnFormSubmit = (event) => {
         event.preventDefault();
-        this.props.register(this.state,authService);
+        this.props.register(this.state);
     }
 
     handleOnPasswordRepeatChange = (object) => {
@@ -47,7 +54,7 @@ class ConnectedRegisterForm extends Component{
 
     render(){
         return (
-            <StyledRegisterForm
+            <RegisterForm
                 onInputChange={this.handleOnChange}
                 onFormSubmit={this.handleOnFormSubmit}
                 passwordRepeatedCorrectly={this.state.passwordRepeatedCorrectly}
@@ -58,6 +65,6 @@ class ConnectedRegisterForm extends Component{
     }
 }
 
-const RegisterForm = connect(select, mapDispatchToProps)(ConnectedRegisterForm);
+const RegisterFormContainer = connect(select, mapDispatchToProps)(ConnectedRegisterForm);
 
-export { RegisterForm };
+export default RegisterFormContainer;

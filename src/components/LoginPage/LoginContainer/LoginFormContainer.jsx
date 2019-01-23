@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import { StyledLoginForm } from './LoginForm.Presentation';
+import LoginForm from '../LoginPage/LoginForm';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
 import { bindActionCreators} from 'redux';
-import { selectLogin, selectLoginFailed, selectIsLoading } from '../../../_selectors';
+import {selectLoginFailed, selectIsLoading } from '../../../_selectors';
+import auth0 from '../../../_service/auth0'
+
 
 const select = appState => ({
     isLoading: selectIsLoading(appState),
     loginFailed: selectLoginFailed(appState)
 });
 
-
 const mapDispatchToProps = dispatch => (bindActionCreators({
-    login: userActions.login
+    login: (state) => userActions.login(state, () => auth0.login(state.email,state.password))
 },dispatch));
+
 
 class ConnectedLoginForm extends Component{
     state={
@@ -26,14 +28,14 @@ class ConnectedLoginForm extends Component{
         this.setState({[target.name]: target.value});
     }
 
-    handleOnFormSubmit = (event, authService = this.props.authService) => {
+    handleOnFormSubmit = async (event) => {
         event.preventDefault();
-        this.props.login(this.state,authService);
+        await this.props.login(this.state);
     }
 
     render(){
         return (
-            <StyledLoginForm
+            <LoginForm
                 onInputChange={this.handleOnChange}
                 onFormSubmit={this.handleOnFormSubmit}
                 loginFailed = {this.props.loginFailed}
@@ -43,5 +45,5 @@ class ConnectedLoginForm extends Component{
     }
 }
 
-const LoginForm = connect(select, mapDispatchToProps)(ConnectedLoginForm);
-export { LoginForm };
+const LoginFormContainer = connect(select, mapDispatchToProps)(ConnectedLoginForm);
+export default LoginFormContainer;

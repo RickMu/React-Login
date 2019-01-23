@@ -1,24 +1,42 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { userActions } from '../../_actions';
 import { connect } from 'react-redux';
 import { CircularProgressIcon } from '../common/ProgressIcon/CircularIcon';
+import { AuthSelectors } from '../../_selectors';
+import {Redirect} from 'react-router-dom'
+import auth0 from '../../_service/auth0'
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators({
-    authenticate: userActions.authenticate,
-    getUserInfo: userActions.getUserInfo,
-}, dispatch));
+const mapDispatchToProps = dispatch => ({
+    authenticate: () => dispatch(userActions.authenticate(auth0.handleAuthentication))
+});
 
-const ConnectedCallbackPage = ({authenticate, authService}) => {
+const select = appState => ({
+    isAuthenticated: AuthSelectors.selectIsAuthenticated(appState)
+});
 
-    authenticate(authService);
-    
-    return (
-        <div>
-            <h2>Callback Page</h2>
-            <CircularProgressIcon/>
-        </div>
-    )
+class ConnectedCallbackPage extends Component{
+
+    async componentDidMount(){
+        
+        const {authenticate} = this.props;
+        await authenticate();
+        
+        console.log("Authenticated")
+    }
+
+    render(){
+        
+        const {isAuthenticated} = this.props;
+
+        return (
+            <div>
+                { isAuthenticated ? 
+                <Redirect to="/"/>
+                :<CircularProgressIcon/> }
+            </div>
+        )
+    }
 }
 
-export const CallbackPage = connect(null,mapDispatchToProps)(ConnectedCallbackPage);
+export const CallbackPage = connect(select,mapDispatchToProps)(ConnectedCallbackPage);

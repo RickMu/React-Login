@@ -1,7 +1,8 @@
-import { login, register, authenticate, logout } from './auth/auth.action';
+import { login, register, authenticate, logout, authenticateSucceed } from './auth/auth.action';
 export const userActions = {
     login: login,
     register: register,
-    authenticate: authenticate,
-    logout: logout
+    authenticate,
+    logout: logout,
+    authenticateSucceed
 }

@@ -1,6 +1,6 @@
 
 import React, {Component } from 'react'
-import { StyledAppBarView } from './AppBar.presentation';
+import { StyledAppBarView } from './AppBar';
 import { connect } from 'react-redux';
 import { combineReducers } from 'redux';
 import { userActions } from '../../../_actions';

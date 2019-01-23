@@ -3,9 +3,10 @@ import { StyledProfileMenu } from './ProfileMenu';
 import { MenuItem } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../../_actions';
+import auth0 from '../../../_service/auth0';
 
 const mapDispatchToProps = dispatch => ({
-  logout: service => dispatch(userActions.logout(service))
+  logout: () => dispatch(userActions.logout(auth0.logout()))
 })
 
 class ProfileMenuContainer extends Component {

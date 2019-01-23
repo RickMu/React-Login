@@ -85,4 +85,4 @@ const LoginForm = withStyles(styles)(StyledLoginForm)
 
 
 
-export { LoginForm as StyledLoginForm};
+export default LoginForm;

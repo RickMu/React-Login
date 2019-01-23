@@ -1,82 +1,59 @@
 import { Auth, Profile } from "../../_constants";
 
-export function register(user, authService){
-    return (dispatch) => {
+
+
+export function register(user, register){
+    return async (dispatch) => {
 
         dispatch({
             type: Auth.REGISTER_STARTED,
             payload: user.email
         });
-
-        authService.signup(user.email,user.password, {
-            firstname: user.firstname,
-            lastname: user.lastname
-        }).then(
-            ()=> {
-                console.log("Sign up Success");
+        try{
+            await register();
+            console.log("Sign up Success");
                 dispatch({
                     type: Auth.REGISTER_SUCCEEDED
-                });
-            }
-        )    
-        .catch(
-            (err)=> {
-                console.log("Sign up failed");
-                dispatch({
-                    type: Auth.REGISTER_FAILED,
-                    payload: err
-                });
             });
+        }
+        catch(err){
+            dispatch({
+                type: Auth.REGISTER_FAILED,
+                payload: err
+            });
+        }
     }
 }
 
-export function login(user, authService){
+export function login(user, login){
 
-    return (dispatch) => {
-
+    return async (dispatch) => {
         dispatch({
             type: Auth.LOGIN_STARTED,
             payload: {
                 email: user.email,
             }
         });
-
-        authService.login(user.email,user.password).then(() => {
-            
-            console.log("Success Login");
-
+        
+        try{
+            await login();
             dispatch({
                 type: Auth.LOGIN_SUCCEEDED
             });
-        }).catch(()=>{
-            console.log("Login Failed");
+        }
+        catch(err) {
             dispatch({
                 type: Auth.LOGIN_FAILED,
                 payload: "login failed"
             });
-        })
+        }
     }
 }
 
-export function authenticate(authService) {
-
-    return (dispatch) => {
-        dispatch({
-            type: Auth.AUTHENTICATION_STARTED
-        });
-    
-        authService.handleAuthentication().then(()=>{
-
-            dispatch({
-                type: Auth.AUTHENTICATION_SUCCEEDED
-            });
-        }).catch((err) => {
-            console.log(err);
-            dispatch({
-                type: Auth.AUTHENTICATION_FAILED
-            });
-        });
-    }
+export function authenticateSucceed(){
+    return ({
+        type: Auth.AUTHENTICATION_SUCCEEDED
+    });
 }
 
 export function getUserInfo(authService){
@@ -125,21 +102,34 @@ export function getUserProfile(authService){
     }
 }
 
-export function logout(authService) {
+export function logout(logout) {
 
-    return (dispatch) => {
+    return async (dispatch) => {
+        await logout();
+        dispatch({
+            type:Auth.AUTHENTICATION_SIGNEDOUT
+        });
+    }
+}
 
-        console.log(dispatch);
-        console.log(authService);
-        authService.logout().then(() =>{
-            dispatch({
-                type:Auth.AUTHENTICATION_SIGNEDOUT
-            });
-        }).catch(err => {
-            console.log(err);
+export function authenticate(validate) {
+    
+    return async (dispatch) => {
+
+        console.log(dispatch)
+        dispatch({
+            type: Auth.AUTHENTICATION_STARTED
+        });
+        
+        try{
+            await validate();
+            dispatch(authenticateSucceed());
+
+        }catch (err){
+            console.log(dispatch)
             dispatch({
                 type: Auth.AUTHENTICATION_FAILED
             });
-        })
+        }
     }
 }
