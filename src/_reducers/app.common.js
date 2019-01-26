@@ -2,26 +2,25 @@ import {AppCommon} from '../_constants';
 
 
 const initialState = {
-    lastPage: null,
-    currentPage: "/",
-    redirect: false,
-    nextPage: null
+    appName:null,
+    appLoaded: false,
+    pageName: null,
+    pages:null
 }
 
 export const AppCommonReducer = (state = initialState, action) =>{
 
-    if(action.type === AppCommon.APP_COMMON_REDIRECT_REQUESTED){
-        Object.assign({}, state, {
-            redirect: true,
-            nextPage: action.payload
+    if(action.type === AppCommon.APP_LOADED){
+        console.log(action.payload)
+        return Object.assign({}, state, {
+            appLoaded:true,
+            appName: action.payload.appName,
+            pages: action.payload.pages
         });
     }
-    else if(action.type === AppCommon.APP_COMMON_REDIRECTED){
-        Object.assign({}, state, {
-            lastPage: state.currentPage,
-            currentPage: state.nextPage,
-            nextPage: null,
-            redirect: false
+    else if(action.type === AppCommon.APP_PAGE_CHANGED){
+        return Object.assign({}, state, {
+            pageName: action.payload
         })
     }
     else{

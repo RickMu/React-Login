@@ -1,14 +1,14 @@
 
 const selectAppCommonState = appState => appState.common;
-const selectLastPage = appState => selectAppCommonState(appState).lastPage;
-const selectNeedRedirect = appState => selectAppCommonState(appState).redirect;
-const selectNextPage = appState => selectAppCommonState(appState).nextPage;
-const selectCurrentPage = appState => selectAppCommonState(appState).currentPage;
+const selectAppName = appState => selectAppCommonState(appState).appName;
+const selectAppLoaded = appState => selectAppCommonState(appState).appLoaded;
+const selectPageName = appState => selectAppCommonState(appState).pageName;
+const selectAllPages = appState => selectAppCommonState(appState).pages;
 
 export const AppCommonSelectors = {
     selectAppCommonState,
-    selectLastPage,
-    selectNeedRedirect,
-    selectNextPage,
-    selectCurrentPage,
+    selectPageName,
+    selectAppName,
+    selectAppLoaded,
+    selectAllPages
 }

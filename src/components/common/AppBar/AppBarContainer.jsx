@@ -1,54 +1,37 @@
-
 import React, {Component } from 'react'
 import { StyledAppBarView } from './AppBar';
 import { connect } from 'react-redux';
-import { combineReducers } from 'redux';
-import { userActions } from '../../../_actions';
-import { SignOutButton, LoginButton } from '../buttons';
-import { CircularProgressIcon } from '../ProgressIcon/CircularIcon';
-import { ProfileMenu } from '../ProfileMenu/ProfileMenu.container';
 import { AuthSelectors} from '../../../_selectors'
+import LoginButton from '../buttons/LoginButton';
+import SignUpButton from '../buttons/SignupButton';
+import ProfileMenuContainer from '../ProfileMenu/ProfileMenuContainer';
+import { AppCommonSelectors } from '../../../_selectors/appCommon_selectors/selectors';
 
 
 const select = appState => ({
     isAuthenticated: AuthSelectors.selectIsAuthenticated(appState),
-    isLoading: AuthSelectors.selectIsLoading(appState)
+    isLoading: AuthSelectors.selectIsLoading(appState),
+    displayName: AppCommonSelectors.selectPageName(appState) ? AppCommonSelectors.selectPageName(appState) : AppCommonSelectors.selectAppName(appState),
+    appPages: AppCommonSelectors.selectAllPages(appState)
 });
 
-class AppBarContainer extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            drawer: {
-                open: false
-            }
-        };
-    }
 
-    toggleDrawer = () => {
-        this.setState(state => {
-            let newState = {...state};
-            newState.drawer.open= !state.drawer.open;
-            return newState;
-        })
-    }
+
+
+class AppBarContainer extends Component {
 
     render(){
-        const { authService, isAuthenticated, isLoading } = this.props;
+        const {isAuthenticated } = this.props;
         
-        let TopRightIcon = <LoginButton/>
-
-        if(isLoading || isAuthenticated){
-            // TopRightIcon = <SignOutButton action={() => this.props.logout(authService)} />
-            TopRightIcon = <ProfileMenu authService={authService}/>
-        }
-
         return (
-           <StyledAppBarView {...this.props} open={this.state.drawer.open} toggleDrawer={this.toggleDrawer}>
-                {TopRightIcon}
+           <StyledAppBarView {...this.props} name={this.props.displayName} pages={this.props.appPages}>   
+                {!isAuthenticated? <LoginButton/> : null}
+                {!isAuthenticated? <SignUpButton/> : null}
+                {isAuthenticated? <ProfileMenuContainer/> : null}
            </StyledAppBarView>
         )
     }
+
 };
 
 const HomeAppBar = connect(select)(AppBarContainer)

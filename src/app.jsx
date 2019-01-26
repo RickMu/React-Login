@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { CallbackPage } from './components/CallbackPage';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { PrivateRoute } from './components/common/PrivateRoute';
 import HomeContainer from './components/HomePage/HomeContainer';
 import LoginContainer from './components/LoginPage/LoginContainer/LoginContainer';
@@ -12,24 +11,13 @@ import { userActions } from './_actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AuthSelectors } from './_selectors';
-const pages = [
-    {
-        name:"Home Page",
-        link:"/"
-    },
-    {
-        name:"Login Page",
-        link:"/login"
-    },
-    {
-        name:"Register Page",
-        link:"/register"
-    }
-];
-//<Route exact path="/" component={HomePage}/>
+import AppActions from './_actions/AppCommon';
+import CallbackPage from './components/CallbackPage/CallbackPage';
+
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    authenticateSucceed: userActions.authenticateSucceed
+    authenticateSucceed: userActions.authenticateSucceed,
+    initApp: ({appName, pages}) => AppActions.init({appName,pages})
 }, dispatch);
 
 
@@ -39,8 +27,24 @@ const mapStateToProps = state => ({
 
 class LoginApp extends Component{
 
-    componentWillMount(){
-    
+    componentDidMount(){
+        this.props.initApp({
+            appName: "Login App",
+            pages: [
+                { 
+                    pageName: "Home",
+                    pageLink: "/"
+                },
+                { 
+                    pageName: "Login",
+                    pageLink: "login"
+                },
+                { 
+                    pageName: "SignUp",
+                    pageLink: "register"
+                }
+            ]
+        }); 
         if(!this.props.isAuthenticated){
             if(auth0.isAuthenticated()){
                 this.props.authenticateSucceed()
@@ -48,21 +52,23 @@ class LoginApp extends Component{
         }
     }
 
+
     render() {
         return (
             <React.Fragment>
-                <HomeAppBar name="Example App" pages={pages} authService={auth0}/>
+                <HomeAppBar name="Example App"/>
                 <Switch>
                     <PrivateRoute exact path="/" redirectPath = "/login" condition={auth0.isAuthenticated()}
                         component={HomeContainer}/>
                     <PrivateRoute path="/login" redirectPath="/" condition={!auth0.isAuthenticated()} 
-                        component={() => <LoginContainer authService={auth0}/>}/>
-                    <Route path="/register" render={()=><RegisterContainer authService={auth0}/>}/>
-                    <Route path="/callback" render={()=><CallbackPage authService={auth0}/>}/>
+                        component={LoginContainer}/>
+                    <Route path="/register" component={RegisterContainer}/>
+                    <Route path="/callback" component={CallbackPage}/>
                 </Switch>
             </React.Fragment>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginApp);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginApp));
+// export default LoginApp;

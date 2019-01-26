@@ -44,7 +44,7 @@ const styles = theme => ({
 
 
 const StyledLoginForm = (props) => {
-    const { classes,onInputChange, onFormSubmit, loginFailed, isLoading } = props;
+    const { classes,onInputChange, onFormSubmit, isLoading } = props;
     return (
         <main className={classes.main}>
             <CssBaseline/>

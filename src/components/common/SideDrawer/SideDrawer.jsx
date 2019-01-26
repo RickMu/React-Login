@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { List, ListItem, ListItemText, Drawer, withStyles, ClickAwayListener, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-
+import { Drawer, withStyles, List, Typography, ListItem } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 const styles = {
     list: {
         width: 250
@@ -11,25 +10,21 @@ const styles = {
 
 class StyledAppSideDrawer extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     render() {
-        const {classes, pages, isOpen, toggle} = this.props;
+        const {classes, isOpen, toggle, pages} = this.props;
         const sideList = (
             <div className={classes.list}>
-                <List>
+                { pages ? <List>
                     { pages.map((page,index) => (
-                        <ListItem button key={page.name} onClick={toggle}>
-                            <Link to={page.link} style={{textDecoration:'none'}} onClick={console.log("Clicked SideBar")}>
+                        <ListItem button key={page.pageName} onClick={toggle}>
+                            <Link to={page.pageLink} style={{textDecoration:'none'}}>
                                 <Typography variant="h6">
-                                    {page.name}
+                                    {page.pageName}
                                 </Typography>
                             </Link>
                         </ListItem>
                     ))}
-                </List>
+                </List> : null}
             </div>
         );
         
@@ -49,4 +44,4 @@ class StyledAppSideDrawer extends Component {
 
 const AppSideDrawer = withStyles(styles)(StyledAppSideDrawer);
 
-export { AppSideDrawer };
+export default AppSideDrawer ;

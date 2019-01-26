@@ -18,6 +18,7 @@ export function configureReactors (services) {
                 nextReaction = result;
                 return true;
             }
+            return false;
         })
 
         if(nextReaction){

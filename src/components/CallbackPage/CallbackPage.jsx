@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { bindActionCreators } from 'redux';
 import { userActions } from '../../_actions';
 import { connect } from 'react-redux';
 import { CircularProgressIcon } from '../common/ProgressIcon/CircularIcon';
@@ -15,14 +14,12 @@ const select = appState => ({
     isAuthenticated: AuthSelectors.selectIsAuthenticated(appState)
 });
 
-class ConnectedCallbackPage extends Component{
+class CallbackPage extends Component{
 
     async componentDidMount(){
-        
+        console.log("component callback")
         const {authenticate} = this.props;
         await authenticate();
-        
-        console.log("Authenticated")
     }
 
     render(){
@@ -39,4 +36,4 @@ class ConnectedCallbackPage extends Component{
     }
 }
 
-export const CallbackPage = connect(select,mapDispatchToProps)(ConnectedCallbackPage);
+export default connect(select,mapDispatchToProps)(CallbackPage);
